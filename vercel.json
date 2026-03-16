@@ -6,7 +6,7 @@
 
     {
 
-      "src": "openmotor_back/wsgi.py",
+      "src": "simpleBlog/wsgi.py",
 
       "use": "@vercel/python",
 
@@ -22,7 +22,7 @@
 
       "src": "/(.*)",
 
-      "dest": "openmotor_back/wsgi.py",
+      "dest": "simpleBlog/wsgi.py",
 
       "headers": {
 
@@ -38,7 +38,7 @@
 
       "src": "/(.*)",
 
-      "dest": "openmotor_back/wsgi.py"
+      "dest": "simpleBlog/wsgi.py"
 
     }
 
