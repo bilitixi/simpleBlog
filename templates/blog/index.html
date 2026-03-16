@@ -1,0 +1,22 @@
+<html>
+<head></head>
+<body>
+<h1>My home page</h1>
+<ul>
+    {% for category in categories %}
+    <li>
+    <a href=" ">
+        {{ category.name }}
+        <ul>
+            {% for post in category.post_set.all %}
+            <li>
+                <a href=" ">{{ post.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+      </a>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
