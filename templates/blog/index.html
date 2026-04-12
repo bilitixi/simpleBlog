@@ -6,6 +6,9 @@
  {% block content %}
 Welcome to my blog
      <h1>My home page</h1>
+     {% if user.is_authenticated %}
+     <p>Hello {{ user.username }}</p>
+     {% endif %}
 
 <ul>
     {% for category in categories %}

@@ -1,9 +1,10 @@
-
-
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from blog.models import Category, Post
+from .forms import CreatePostForm, PostUpdateForm
 
 
 # Create your views here.
@@ -29,3 +30,27 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
+
+class PostCreateView(CreateView):
+    model = Post
+    template_name = 'blog/post_create.html'
+    form_class = CreatePostForm
+    success_url = reverse_lazy('post_list')
+class PostUpdateView(UpdateView):
+    model = Post
+    template_name = 'blog/post_update.html'
+    form_class = PostUpdateForm
+    success_url = reverse_lazy('post_list') # reverse back top post
+class DeletePostView(DeleteView):
+    model = Post
+    template_name = 'blog/post_delete.html'
+    success_url = reverse_lazy('post_list')
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = User.objects.create_user(username = username)
+        user.set_password(password) #must use method
+        user.save()
+        return redirect('login')
+    return render(request, 'registration/register.html') #new folder
