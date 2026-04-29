@@ -8,7 +8,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from blog.models import Category, Post, UserProfile
 from .forms import CreatePostForm, PostUpdateForm
 from .utils import create_user
-
+import pandas as pd
+import openpyxl
 
 # Create your views here.
 def index(request):
@@ -65,5 +66,26 @@ def create_users(request):
         fs = FileSystemStorage()
         fs.save(names_file.name, names_file) # save file to media
         uploaded_file_url = fs.url(names_file.name)
+        uploader_file_path = fs.path(names_file.name)
+        excel_read = pd.read_excel(uploader_file_path)
+        data = pd.DataFrame(excel_read, columns=['username', 'password', 'first_name', 'last_name','email', 'github', 'linkedln'])
+        usernames = data['username'].tolist()
+        passwords = data['password'].tolist()
+        first_names = data['first_name'].tolist()
+        last_names = data['last_name'].tolist()
+        emails = data['email'].tolist()
+        github_urls = data['github'].tolist()
+        linkedln_urls = data['linkedln'].tolist()
+        for username, password, first_name, last_name, github_url, email ,linkedln_url in zip(usernames, passwords, first_names, last_names, github_urls, emails, linkedln_urls):
+            try:
+                user = User.objects.get(username=username)
+                user.delete()
+                create_user(username, password, first_name, last_name, github_url, email, linkedln_url)
+
+            except User.DoesNotExist:
+
+             create_user(username, password, first_name, last_name, github_url, email, linkedln_url)
+        return redirect('login')
+
         return render(request, 'blog/create_users.html', {'uploaded_file_url': uploaded_file_url})
     return render(request, 'blog/create_users.html')

@@ -3,6 +3,6 @@
     <form method="post" enctype="multipart/form-data" action = {% url 'create_users' %}>
         {% csrf_token %}
         <input type="file" name="names_file">
-        <button type="submit">Upload</button>
+        <button type="submit">Create User</button>
     </form>
 {% endblock %}
